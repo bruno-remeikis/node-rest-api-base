@@ -8,7 +8,7 @@ export default class UserController
         console.log('Selecting users');
 
         const query = `
-            select id, email, pass
+            select id, name, email, pass
             from tb_user`;
 
         connection.query(query, [], (err, result) =>
@@ -27,18 +27,18 @@ export default class UserController
     {
         console.log('Inserting user');
 
-        const { email, pass, confPass } = req.body;
+        const { name, email, pass, confPass } = req.body;
 
         if(pass !== confPass)
             res.status(400).json({ msg: "Senhas diferentes" });
 
         const query = 
             `insert into tb_user
-                (email, pass)
+                (name, email, pass)
             values ?`;
 
         const values = [
-            [email, pass]
+            [name, email, pass]
         ];
 
         connection.query(query, [values], (err, result) =>
