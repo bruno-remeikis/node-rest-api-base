@@ -3,26 +3,6 @@ import connection, { ErrorCodes } from '../database/mysql';
 
 export default class UserController
 {
-    async select(req: Request, res: Response)
-    {
-        console.log('Select users');
-
-        const query = `
-            select id, name, email, pass
-            from tb_user`;
-
-        connection.query(query, [], (err, result) =>
-        {
-            if(err) {
-                console.error(err.message);
-                res.status(400).json({ code: "ERROR" });
-                return;
-            }
-
-            res.json(result);
-        });
-    }
-
     async insert(req: Request, res: Response)
     {
         console.log('Insert user');
@@ -70,6 +50,50 @@ export default class UserController
             res.json({
                 id: result.insertId
             });
+        });
+    }
+
+    async select(req: Request, res: Response)
+    {
+        console.log('Select users');
+
+        const query = `
+            select id, name, email, pass
+            from tb_user`;
+
+        connection.query(query, [], (err, result) =>
+        {
+            if(err) {
+                console.error(err.message);
+                res.status(400).json({ code: "ERROR" });
+                return;
+            }
+
+            res.json(result);
+        });
+    }
+
+    async update(req: Request, res: Response)
+    {
+        console.log('Update user');
+
+        const id = req.params.id;
+        const { name, email } = req.body;
+
+        const query = `
+            update tb_user
+            set name = ?, email = ?
+            where id = ?`;
+
+        connection.query(query, [name, email, id], (err, result) =>
+        {
+            if(err) {
+                console.error(err.message);
+                res.status(400).json({ code: "ERROR" });
+                return;
+            }
+
+            res.send();
         });
     }
 

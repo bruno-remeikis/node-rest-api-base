@@ -7,8 +7,9 @@ const routes = Router();
 const userController = new UserController();
 
 // ROUTES
+routes.post('/user', userController.insert);
 routes.get('/user', userController.select);
-routes.put('/user', userController.insert);
+routes.put('/user/:id', userController.update);
 routes.delete('/user/:id', userController.delete);
 
 export default routes;
